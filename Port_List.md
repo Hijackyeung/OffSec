@@ -75,3 +75,8 @@ After the first foothold, remember to enumerate internal networking. This can le
 - If there are **writable folders**, try to perform `PsExec` authentication with `impacket-psexec`
 - Check interesting folders on the Domain Controllers public shares
 - If gained write access and SMB is linked to a webserver, try uploading a revserse shell
+
+'''bash
+smbclient -U '' -L //10.10.10.175
+smbmap -H 10.10.10.175
+'''
