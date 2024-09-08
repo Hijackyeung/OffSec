@@ -1,13 +1,6 @@
 # OSCP Cheatsheet
 
-**Prepared as part of my OSCP Preparation.**
-
-Successfully passed the OSCP exam on May 20, 2024. Verify my achievement [here](https://www.credential.net/666b9a86-017d-48fa-894a-5c39ef1d7b7b).
-
-Feel free to reach out with any questions or inquiries at saisathvikruppa@proton.me!
-
 # General
-
 
 <aside>
 💡 For Finding all important files in Windows:(CTF Style)
