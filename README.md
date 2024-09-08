@@ -400,7 +400,7 @@ git show <commit-id>
 ## Connecting to RDP
 
 ```bash
-xfreerdp /u:uname /p:'pass' /v:IP
+xfreerdp /u:uname /p:'pass' /v:IP +clipboard
 xfreerdp /d:domain.com /u:uname /p:'pass' /v:IP
 xfreerdp /u:uname /p:'pass' /v:IP +clipboard #try this option if normal login doesn't work
 xfreerdp /u:Administrator /d:target.local /pth:aad3b435b51404eeaad3b435b51404ee:d958f23d92281df0b62a6d7e9f42ee88 /v:192.168.43.9
