@@ -38,6 +38,64 @@ After the first foothold, remember to enumerate internal networking. This can le
 - If there is an **RSA** key protected by password, crack it with **ssh2john** and **john**
 - As the last chance run a bruteforce attack `hydra -L path/to/usernames.txt -P path/to/wordlist.txt <IP> ssh`
 
+# SMTP port 25
+- Enumerate 
+```bash
+nmap -p25, --script smtp-open-relay [host]
+ismtp -h [host]:25 -e [wordlist] -l 3
+smtp-user-enum -M [mode] -U [wordlist] -t [host]
+modes: VRFY, EXPN, RCPT
+example wordlist: /usr/share/metasploit-framework/data/wordlists/unix_users.txt
+sendemail -s [host] -xu [username] -xp [password] -f [from] -t [to] -u [subject] -m [message] -a [attachment]
+swaks --server [host] -au [username] -ap [password] -f [from] -t [to] --h-Subject [subject] --body [message] --attach @[attachment] -n
+
+```
+
+# DNS port 53 (UDP)
+- Enumerate
+
+# POP3 port 110
+- Enumerate
+
+# IMAP port 143
+- Enumerate 
+
+# SNMP port 161 (UDP)
+- Enumerate
+MIB Identifiers
+System Processes: 	1.3.6.1.2.1.25.1.6.0
+Running Programs: 	1.3.6.1.2.1.25.4.2.1.2
+Processes Paths: 	1.3.6.1.2.1.25.4.2.1.4
+Storage Units: 	1.3.6.1.2.1.25.2.3.1.4
+Software Names: 	1.3.6.1.2.1.25.6.3.1.2
+User Accounts: 	1.3.6.1.4.1.77.1.2.25
+TCP Local Ports: 	1.3.6.1.2.1.6.13.1.3
+
+```bash
+hydra -P [wordlist] -v [host] snmp
+snmp-check -c [community] [ip]
+
+snmpwalk -c [community] -v [version] [host] NET-SNMP-EXTEND-MIB::nsExtendOutputFull
+snmpwalk -c [community] -v [version → 1 or 2c] ⇒ entire MIB tree
+snmpwalk -c [community] -v [version] [host] [identifier] ⇒ specific MIB parameter
+```
+
+
+# MSSQL port 1433
+- Enumerate 
+
+# NFS port 2049
+- Enumerate 
+
+# MYSQL port 3306
+- Enumerate
+
+# VNC port 5900
+- Enumerate
+
+
+
+
 # WEB port 80, 443
 - Enumerate the webservice with basic nmap script `nmap --script=http-enum <IP>`
 - Check /robots.txt and /sitemap.xml for additional information
