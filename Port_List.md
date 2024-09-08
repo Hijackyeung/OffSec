@@ -62,7 +62,8 @@ swaks --server [host] -au [username] -ap [password] -f [from] -t [to] --h-Subjec
 
 # SNMP port 161 (UDP)
 - Enumerate
-MIB Identifiers
+```bash
+#MIB Identifiers
 System Processes: 	1.3.6.1.2.1.25.1.6.0
 Running Programs: 	1.3.6.1.2.1.25.4.2.1.2
 Processes Paths: 	1.3.6.1.2.1.25.4.2.1.4
@@ -71,7 +72,6 @@ Software Names: 	1.3.6.1.2.1.25.6.3.1.2
 User Accounts: 	1.3.6.1.4.1.77.1.2.25
 TCP Local Ports: 	1.3.6.1.2.1.6.13.1.3
 
-```bash
 hydra -P [wordlist] -v [host] snmp
 snmp-check -c [community] [ip]
 
