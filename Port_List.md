@@ -53,7 +53,9 @@ swaks --server [host] -au [username] -ap [password] -f [from] -t [to] --h-Subjec
 
 # DNS port 53 (UDP)
 - Enumerate
-
+```bash
+gobuster dns -d [domain] -w [wordlist] -t [num threads]
+```
 # POP3 port 110
 - Enumerate
 
