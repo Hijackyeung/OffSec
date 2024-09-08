@@ -24,7 +24,6 @@ After the first foothold, remember to enumerate internal networking. This can le
 ![Chance-Penalty-6734's mindmap](img/ad-map.png)
   
 # FTP port 21
-
 - Enumerate the service with **nmap**, usually it is available on port 21 using `nmap --script ftp-* -p 21 <IP>`
 - Check if the FTP version is vulerable
 - Check if it is allowed anonymous login using `ftp anonymous@<IP>` and eventually read the files
@@ -32,7 +31,6 @@ After the first foothold, remember to enumerate internal networking. This can le
 - If gained write access and ftp is linked to a webserver, try uploading a revserse shell
 
 # SSH port 22
-
 - Enumerate the service both on port 22 and 2222 where it is usually hosted
 - Try password spreading with found credentials
 - Once in the system check /etc/passwd for other users and then perform basic bruteforce (eg: username:username)
@@ -41,7 +39,6 @@ After the first foothold, remember to enumerate internal networking. This can le
 - As the last chance run a bruteforce attack `hydra -L path/to/usernames.txt -P path/to/wordlist.txt <IP> ssh`
 
 # WEB port 80, 443
-
 - Enumerate the webservice with basic nmap script `nmap --script=http-enum <IP>`
 - Check /robots.txt and /sitemap.xml for additional information
 - Enumerate web directories with Feroxbuster, Dirbuster, Gobuster
@@ -54,21 +51,23 @@ After the first foothold, remember to enumerate internal networking. This can le
 - Perform a Path Traversal and LFI when a `?page=X` is found. In case of a Windows machine try a RFI with Pass the Hash attack
 
 # KERBEROS, 88
-
 - Enumerate the domain with nmap
 - Perform a [Kerbrute attrack](https://www.hackingarticles.in/a-detailed-guide-on-kerbrute)
 - With known credentials if the Kerberos pre-authentication is not enabled (**DONT_REQ_PREAUTH**), perform a [AS-Rep roast attack](https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/asreproast)
 - Once in the system perform analysis on [Kerberoastable](https://book.hacktricks.xyz/windows-hardening/active-directory-methodology/kerberoast) users and eventually perform Kerberoasting
 - If found any hashes with `responder` or other methods, crack them with `hashcat` or perform Relay Attack
 
-# SNMP port 161
+```bash
+#try to get uid with a user list
+python3 GetNPUsers.py abc.com/ -no-pass -usersfile userslist.txt -dc-ip 10.10.10.175
+```
 
+# SNMP port 161
 - Enumerate the version of the service. It runs on SNMP and requires sudo to scan `sudo nmap -p 161 -sV <IP>`
 - Try `snmpwalk` on the service and get all info about MIBs, check known MIBs (users, installed programs etc..)
 - Try to get more information enumerating `NET-SNMP-EXTEND-MIB::nsExtendOutputFull`
 
 # SMB 139, 445
-
 - Enumerate SMB version, check if signing is enabled, in order to perform Relay Attacks
 - Check if SMB anonymous share access is enabled. If so download all possible data. Perform data analysis
 - Spray found credentials in the domain (or not, with **--local-auth**) with `crackmapexec`, repeat the process for every username and password found
@@ -76,9 +75,17 @@ After the first foothold, remember to enumerate internal networking. This can le
 - Check interesting folders on the Domain Controllers public shares
 - If gained write access and SMB is linked to a webserver, try uploading a revserse shell
 
-
 ```bash
 #Attacker
 smbclient -U '' -L //10.10.10.175
 smbmap -H 10.10.10.175
 ```
+
+# LDAP 389
+- LDAP stands for Lightweight Directory Access Protocol. We can use nmap to gain further information.
+
+```bash
+nmap --script=ldap*  135 10.10.10.175
+```
+
+
