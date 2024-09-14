@@ -65,6 +65,8 @@ gobuster dns -d [domain] -w [wordlist] -t [num threads]
 # SNMP port 161 (UDP)
 - Enumerate
 ```bash
+sudo nmap -p161 -sU -A 192.168.197.145
+
 #MIB Identifiers
 System Processes: 	1.3.6.1.2.1.25.1.6.0
 Running Programs: 	1.3.6.1.2.1.25.4.2.1.2
